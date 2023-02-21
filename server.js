@@ -5,5 +5,7 @@ const PORT = 3010
 
 const server = http.createServer(app)
 
-app.listen(PORT)
+app.listen(PORT,()=>{
+    console.log(`Listening At Port ${PORT}`)
+})
 
