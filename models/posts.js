@@ -4,5 +4,5 @@ const postSchema=mongoose.Schema({
     heading:{type:String},
     description:{type:String}
 })
-
+ 
 module.exports=mongoose.model('Posts',postSchema)
