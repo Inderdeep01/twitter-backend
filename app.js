@@ -3,6 +3,7 @@ const app=express();
 const dotenv = require('dotenv')
 dotenv.config()
 const tweetHandler = require('./routes/tweets')
+const userRoutes = require('./routes/Signup')
 //body parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended:true}))
@@ -15,6 +16,7 @@ mongoose.connect(process.env.MONGOOSE)
     .catch(err=>console.log(err))
 
 app.use('/tweets',tweetHandler)
+app.use('/users',userRoutes)
 app.use('/',(req,res)=>{
     res.status(200).send("Welcome to Home Route");
 })
