@@ -20,10 +20,31 @@ router.post("/signup",async(req,res)=>{
     if(error)
     {
         return res.status(400).json(error.details[0].message);
+    } 
+    const cond={
+        $or:[
+            {$and:[
+                {email:{$eq:email}},
+                {email:{$ne:null}}
+            ]},
+            {$and:[
+                {username:{$eq:username}},
+                {username:{$ne:null}}
+            ]},
+            {$and:[
+                {phone:{$eq:phone}},
+                {phone:{$ne:null}}
+            ]},
+        ]    
+    }
+    const existUser=await User.find(cond);
+    console.log(existUser);
+    if(existUser.length>0)
+    {
+        return res.status(400).json("User Already Exist")
     }
     const saltRounds=10;
     const encryptPassword=await bcrypt.hash(password, saltRounds)
-
     User.create({username,email,password:encryptPassword,phone,DOB})
     .then(result=>res.status(201).json(result))
     .catch(err=>res.status(500).json(err))
