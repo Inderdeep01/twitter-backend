@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const UserSchema=mongoose.Schema({
     username:{
         type:String,
+        required:true,
     },
     password:{
         type:String,
@@ -21,6 +22,8 @@ const UserSchema=mongoose.Schema({
     DOB:{
         type:Date
     } 
+},{
+    timestamps:true,
 })
 
 module.exports=mongoose.model("User",UserSchema)
