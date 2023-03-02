@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const tweetHandler = require('./routes/tweets')
 const userRouter = require('./routes/userRouter')
 const censorHandler = require('./routes/censor')
+
 //body parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended:true}))
