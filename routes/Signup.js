@@ -46,7 +46,7 @@ router.post("/signup",async(req,res)=>{
     const saltRounds=10;
     const encryptPassword=await bcrypt.hash(password, saltRounds)
     User.create({username,email,password:encryptPassword,phone,DOB})
-    .then(result=>res.status(201).json(result))
+    .then(result=>res.status(201).json({...result,password:"Password is encrypted"}))
     .catch(err=>res.status(500).json(err))
 })
 
