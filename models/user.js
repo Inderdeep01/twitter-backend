@@ -19,6 +19,10 @@ const UserSchema=mongoose.Schema({
         type:Boolean,
         default:false, 
     },
+    isBanned:{
+        type:Boolean,
+        default:false
+    },
     DOB:{
         type:Date
     } 
