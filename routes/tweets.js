@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Posts = require('../models/posts')
-
+const protect=require('../middleware/protect')
 router.get('/',(req,res)=>{
     Posts.find().then((result)=>{res.status(200).json(result)})
 })
