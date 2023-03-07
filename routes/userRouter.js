@@ -4,6 +4,7 @@ const bcrypt=require('bcrypt')
 const router=express.Router();
 const User=require("../models/user");
 const genToken = require("../Token");
+const protect = require("../middleware/protect");
 
 const UserSchema=joi.object(
     {
@@ -58,7 +59,9 @@ router.post("/signup",async(req,res)=>{
             return res.json({message:"Another account is using the same Phone number"})
         }
     }
-    var user=await User.create({username,email,password,DOB:new Date(DOB),phone});
+    const saltRounds=10;
+    var encryptPassword=await bcrypt.hash(password,saltRounds);
+    var user=await User.create({username,email,password:encryptPassword,DOB:new Date(DOB),phone});
     const id=user._id;
         user=user._doc;
         //deleting unneccesary object properties
