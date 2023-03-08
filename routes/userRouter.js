@@ -66,7 +66,7 @@ router.post("/signup",async(req,res)=>{
         user=user._doc;
         //deleting unneccesary object properties
         delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;
-    res.status(201).json({
+    return res.status(201).json({
         ...user,
         token:await genToken(id),
     });
@@ -115,13 +115,13 @@ router.post('/login',async(req,res)=>{
         user=user._doc;
         //deleting unneccesary object properties
         delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;
-        res.status(200).json({
+        return res.status(200).json({
             ...user,
             token:await genToken(id),
         });
     }
     else{
-        res.status(401).json({message:'Invalid Username/Email/Phone Number or Password'});
+        return res.status(401).json({message:'Invalid Username/Email/Phone Number or Password'});
     }
 })
 
