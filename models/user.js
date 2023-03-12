@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const UserSchema=mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+    },
     username:{
         type:String,
         required:true,
@@ -25,6 +29,10 @@ const UserSchema=mongoose.Schema({
     },
     DOB:{
         type:Date
+    },
+    pic:{
+        type:String,
+        default:'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png',
     } 
 },{
     timestamps:true,
