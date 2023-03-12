@@ -6,6 +6,8 @@ const morgan = require('morgan')
 const tweetHandler = require('./routes/tweets')
 const userRouter = require('./routes/userRouter')
 const followRouter = require('./routes/follow')
+const followers=require('./routes/followers')
+const following=require('./routes/following')
 const censorHandler = require('./routes/censor')
 
 //body parser
@@ -26,6 +28,8 @@ app.use('/tweets',tweetHandler)
 app.use('/auth',userRouter)
 app.use('/censor',censorHandler)
 app.use('/follow',followRouter)
+app.use('/followers',followers)
+app.use('following',following)
 app.use('/',(req,res)=>{
     res.status(200).send("Welcome to Home Route");
 })
