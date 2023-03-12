@@ -29,7 +29,7 @@ app.use('/auth',userRouter)
 app.use('/censor',censorHandler)
 app.use('/follow',followRouter)
 app.use('/followers',followers)
-app.use('following',following)
+app.use('/following',following)
 app.use('/',(req,res)=>{
     res.status(200).send("Welcome to Home Route");
 })
