@@ -4,10 +4,10 @@ const bcrypt=require('bcrypt')
 const router=express.Router();
 const User=require("../models/user");
 const genToken = require("../Token");
-const protect = require("../middleware/protect");
 
 const SignupSchema=joi.object(
     {
+        name:joi.string().required(),
         username:joi.string().min(4).required(),
         email:joi.string().email(),
         password:joi.string().required().min(6),
@@ -17,8 +17,8 @@ const SignupSchema=joi.object(
 ).or("email","phone")
 
 router.post("/signup",async(req,res)=>{
-    const {username,email,password,DOB,phone}=req.body;
-    var {error}=await SignupSchema.validate({username,email,password,DOB,phone});
+    const {name,username,email,password,DOB,phone}=req.body;
+    var {error}=await SignupSchema.validate({name,username,email,password,DOB,phone});
     if(error){
         res.status(400);
         error=error.details[0].message.replace( /\"/g, "" );
@@ -61,11 +61,11 @@ router.post("/signup",async(req,res)=>{
     }
     const saltRounds=10;
     var encryptPassword=await bcrypt.hash(password,saltRounds);
-    var user=await User.create({username,email,password:encryptPassword,DOB:new Date(DOB),phone});
+    var user=await User.create({name,username,email,password:encryptPassword,DOB:new Date(DOB),phone});
     const id=user._id;
         user=user._doc;
         //deleting unneccesary object properties
-        delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;
+        delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;delete user.isBanned;
     return res.status(201).json({
         ...user,
         token:await genToken(id),
@@ -110,11 +110,15 @@ router.post('/login',async(req,res)=>{
         ]
     }
     var user=await User.findOne(keyword);
+    if(user.isBanned)
+    {
+        return res.status(401).json({message:'Your Account Is Banned'})
+    }
     if(user && await bcrypt.compare(password,user.password)){
         const id=user._id;
         user=user._doc;
         //deleting unneccesary object properties
-        delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;
+        delete user._id;delete user.password;delete user.createdAt;delete user.updatedAt;delete user.__v;delete user.isAdmin;delete user.isBanned;
         return res.status(200).json({
             ...user,
             token:await genToken(id),
